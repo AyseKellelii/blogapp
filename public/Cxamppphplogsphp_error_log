@@ -1,0 +1,1 @@
+[12-Oct-2025 15:30:59 UTC] PHP Fatal error:  Trait "Spatie\MediaLibrary\InteractsWithMedia" not found in D:\blogapp\app\Models\User.php on line 14
