@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Stocker - Stock Market Website Template</title>
+    <title>Profil - BlogUniverse</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -28,6 +28,8 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('user/css/style.css')}}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('user/img/blogging.png') }}">
+
 </head>
 
 <body>
@@ -88,9 +90,9 @@
                     </a>
                     <div class="dropdown-menu m-0">
                         <a href="{{route('user.post')}}" class="dropdown-item"> Tüm Bloglar</a>
-                        @foreach($categories as $category)
-                            <a href="#" class="dropdown-item">
-                                {{ $category->name }}
+                        @foreach($categories as $cat)
+                            <a href="{{ route('user.category_post', $cat->slug) }}" class="dropdown-item">
+                                {{ $cat->name }}
                             </a>
                         @endforeach
                     </div>

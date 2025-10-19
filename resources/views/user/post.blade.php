@@ -21,6 +21,8 @@
     <link href="{{asset('user/lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('user/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
     <link href="{{asset('user/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('user/img/blogging.png') }}">
+
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -74,6 +76,7 @@
     <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
         <a href="" class="navbar-brand p-0">
             <h1 class="text-primary"><i class="fas fa-pen me-3"></i>BlogUniverse</h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="fa fa-bars"></span>
@@ -87,9 +90,9 @@
                     </a>
                     <div class="dropdown-menu m-0">
                         <a href="{{route('user.post')}}" class="dropdown-item"> Tüm Bloglar</a>
-                        @foreach($categories as $category)
-                            <a href="#" class="dropdown-item">
-                                {{ $category->name }}
+                        @foreach($categories as $cat)
+                            <a href="{{ route('user.category_post', $cat->slug) }}" class="dropdown-item">
+                                {{ $cat->name }}
                             </a>
                         @endforeach
                     </div>
@@ -132,26 +135,20 @@
             @foreach($posts as $post)
                 <div class="col-lg-3 col-md-6">
                     <div class="blog-item p-4 shadow-sm rounded bg-white h-100">
-
-                        <!-- Blog görseli -->
                         <div class="blog-img mb-3" style="height: 220px; overflow: hidden;">
-                            <img src="{{ $post->image_url }}"
+                            <img src="{{ $post->image_url ?: asset('user/img/default.jpg') }}"
                                  class="img-fluid w-100 rounded"
                                  style="height: 100%; object-fit: cover; object-position: center;"
                                  alt="{{ $post->title }}">
                         </div>
-
-                        <!-- Başlık ve kategori -->
                         <div class="text-center mb-3">
                             <h5 class="fw-bold mb-1">Başlık: {{ $post->title }}</h5>
                             <small class="text-primary">
                                 Kategori: {{ $post->categories->pluck('name')->join(', ') ?: 'Kategori Yok' }}
                             </small>
                         </div>
-
-                        <!-- Yazar bilgileri -->
                         <div class="d-flex align-items-center">
-                            <img src="{{ $post->user->profile_photo_url ?: asset('user/img/default.png') }}"
+                            <img src="{{ $post->user->profile_photo_url }}"
                                  class="img-fluid rounded-circle"
                                  style="width: 50px; height: 50px; object-fit: cover;"
                                  alt="{{ $post->user->name ?? 'Admin' }}">
@@ -160,8 +157,6 @@
                                 <small>Yayınlanma: {{ $post->created_at->format('d M Y') }}</small>
                             </div>
                         </div>
-
-                        <!-- Devamını oku butonu -->
                         <div class="text-center mt-3">
                             <a class="btn btn-primary rounded-pill py-2 px-4" href="{{ route('post.show', $post->slug) }}">
                                 Devamını Oku
@@ -173,7 +168,7 @@
             @endforeach
         </div>
 
-    @if($posts->isEmpty())
+        @if($posts->isEmpty())
             <div class="text-center mt-5">
                 <p>Henüz yayınlanmış bir blog yazısı bulunmuyor.</p>
             </div>
@@ -181,6 +176,7 @@
     </div>
 </div>
 <!-- Blog End -->
+
 
 <!-- Footer Start -->
 <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">

@@ -16,6 +16,9 @@
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('user/img/blogging.png') }}">
+
 
     <!-- Libraries Stylesheet -->
     <link rel="stylesheet" href="{{asset('user/lib/animate/animate.min.css')}}"/>
@@ -88,11 +91,12 @@
                     </a>
                     <div class="dropdown-menu m-0">
                         <a href="{{route('user.post')}}" class="dropdown-item"> Tüm Bloglar</a>
-                        @foreach($categories as $category)
-                            <a href="#" class="dropdown-item">
-                                {{ $category->name }}
+                        @foreach($categories as $cat)
+                            <a href="{{ route('user.category_post', $cat->slug) }}" class="dropdown-item">
+                                {{ $cat->name }}
                             </a>
                         @endforeach
+
                     </div>
                 </div>
 
@@ -261,14 +265,14 @@
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="{{ 0.2 + ($index * 0.2) }}s">
                     <div class="team-item text-center shadow-sm rounded-3 overflow-hidden">
                         <div class="team-img" style="height: 250px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ $author->profile_photo_url }}"
+                            <img src="{{ $author->profile_photo_url ?: asset('user/img/default.png') }}"
                                  class="img-fluid rounded-circle"
                                  alt="{{ $author->name }}"
                                  style="width: 200px; height: 200px; object-fit: cover;">
                         </div>
                         <div class="team-title mt-3">
                             <h4 class="mb-1">{{ $author->name }} {{ $author->surname }}</h4>
-                            <h5 class="mb-2">{{$author->email}}</h5>
+                            <h5 class="mb-2">{{ $author->email }}</h5>
                             <p class="mb-2 text-muted">Yazar</p>
                         </div>
                         <div class="team-icon mb-3">
@@ -281,6 +285,7 @@
                 </div>
             @endforeach
         </div>
+
     </div>
 </div>
 <!-- Team End -->

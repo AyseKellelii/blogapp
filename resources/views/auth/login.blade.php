@@ -58,6 +58,8 @@
     <link rel="stylesheet" href="{{asset('panel/assets/vendor/css/pages/page-auth.css')}}" />
     <!-- Helpers -->
     <script src="{{asset('panel/assets/vendor/js/helpers.js')}}"></script>
+    <link rel="icon" type="image/png" href="{{ asset('user/img/blogging.png') }}">
+
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->

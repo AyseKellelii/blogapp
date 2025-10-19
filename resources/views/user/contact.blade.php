@@ -21,6 +21,8 @@
     <link href="{{asset('user/lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('user/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
     <link href="{{asset('user/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('user/img/blogging.png') }}">
+
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -88,9 +90,9 @@
                     </a>
                     <div class="dropdown-menu m-0">
                         <a href="{{route('user.post')}}" class="dropdown-item"> Tüm Bloglar</a>
-                        @foreach($categories as $category)
-                            <a href="#" class="dropdown-item">
-                                {{ $category->name }}
+                        @foreach($categories as $cat)
+                            <a href="{{ route('user.category_post', $cat->slug) }}" class="dropdown-item">
+                                {{ $cat->name }}
                             </a>
                         @endforeach
                     </div>

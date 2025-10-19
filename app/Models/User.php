@@ -60,7 +60,7 @@ class User extends Authenticatable implements HasMedia
 
     public function getProfilePhotoUrlAttribute(): string
     {
-        return $this->getFirstMediaUrl('profile_photo') ?: asset('user/img/default-avatar.jpg');
+        return $this->getFirstMediaUrl('profile_photo') ?: asset('user/img/default.png');
     }
 
     public function posts(): HasMany

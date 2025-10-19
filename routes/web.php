@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\PostController;
 use App\Http\Controllers\User\AboutController;
+use App\Http\Controllers\User\Category_postController;
 use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\IndexController;
 use App\Http\Controllers\User\ProfileController;
@@ -22,7 +23,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('auth.login.store
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // USER
-Route::get('/', [IndexController::class, 'index'])->middleware('auth')->name('user.index');
+Route::get('/', [IndexController::class, 'index'])->name('user.index');
 Route::get('/post/{slug}', [App\Http\Controllers\User\PostController::class, 'show'])->name('post.show');
 Route::get('/posts', [App\Http\Controllers\User\PostController::class, 'index'])->name('user.post');
 Route::get('/about', [AboutController::class, 'index'])->name('user.about');
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('user.profile.update');
     Route::delete('profile/remove-photo', [ProfileController::class, 'removePhoto'])->name('user.profile.removePhoto');
 });
+Route::get('/category/{slug}', [Category_postController::class, 'show'])->name('user.category_post');
 
 // ADMIN PANELİ-sadece admin erişebilir
 Route::middleware(['auth', 'admin'])->group(function () {
