@@ -43,26 +43,25 @@ class CategoryController extends Controller
         return response()->json(['success' => 'Kategori başarıyla eklendi!']);
     }
 
-    public function edit($id)
+    public function edit(CategoryModel $category)
     {
-        $category = CategoryModel::findOrFail($id);
         return response()->json(['category' => $category]);
     }
 
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, CategoryModel $category)
     {
-        $category = CategoryModel::findOrFail($id);
         $category->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
         ]);
+
         return response()->json(['success' => 'Kategori başarıyla güncellendi!']);
     }
 
-    public function destroy($id)
+    public function destroy(CategoryModel $category)
     {
-        $category = CategoryModel::findOrFail($id);
         $category->delete();
+
         return response()->json(['success' => 'Kategori silindi!']);
     }
 }

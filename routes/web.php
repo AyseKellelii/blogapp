@@ -33,7 +33,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('user.profile.update');
     Route::delete('profile/remove-photo', [ProfileController::class, 'removePhoto'])->name('user.profile.removePhoto');
 });
+Route::get('/categories', [Category_postController::class, 'index'])->name('user.categories.index');
 Route::get('/category/{slug}', [Category_postController::class, 'show'])->name('user.category_post');
+
 
 // ADMIN PANELİ-sadece admin erişebilir
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -43,17 +45,24 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::prefix('panel/categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/fetch', [CategoryController::class, 'fetch'])->name('categories.fetch');
-    Route::post('/store', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
-    Route::put('/update/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('categories.delete');
+    Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
-Route::prefix('panel/posts')->name('panel.post.')->group(function() {
-    Route::get('/', [PostController::class, 'index'])->name('index');
-    Route::get('/fetch', [PostController::class, 'fetch'])->name('fetch');
-    Route::post('/store', [PostController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [PostController::class, 'edit'])->name('edit');
-    Route::put('/update/{id}', [PostController::class, 'update'])->name('update');
-    Route::delete('/{id}', [PostController::class, 'destroy'])->name('destroy');
+Route::prefix('panel')->group(function () {
+    Route::get('/posts', [PostController::class, 'index'])->name('panel.post.index');
+    Route::get('/posts/fetch', [PostController::class, 'fetch'])->name('panel.post.fetch');
+    Route::post('/posts', [PostController::class, 'store'])->name('panel.post.store');
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('panel.post.edit');
+    Route::put('/posts/{post}', [PostController::class, 'update'])->name('panel.post.update');
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('panel.post.destroy');
 });
+
+Route::get('/panel/profile', [\App\Http\Controllers\Panel\ProfileController::class, 'index'])->name('panel.profile');
+Route::put('/panel/profile/update', [\App\Http\Controllers\Panel\ProfileController::class, 'update'])->name('panel.profile.update');
+Route::delete('/panel/profile/photo', [\App\Http\Controllers\Panel\ProfileController::class, 'deletePhoto'])
+    ->name('panel.profile.photo.delete');
+
+

@@ -204,6 +204,10 @@
                                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
                         </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_writer" name="is_writer" value="1">
+                            <label class="form-check-label" for="is_writer">Hemen Yazar Ol</label>
+                        </div>
 
                         <button type="submit" class="btn btn-primary d-grid w-100">Kayıt Ol</button>
                     </form>

@@ -25,8 +25,6 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            // Her iki rol de girişten sonra anasayfaya gider
             return redirect()->route('user.index');
         }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ class RegisterController extends Controller
     public function store(RegisterRequest $request)
     {
         $data = $request->validated();
+        // eğer check box u işaretlerse admin olarak kaydolacak
+        $role = $request->has('is_writer') ? 'admin' : 'user';
 
         $user = User::create([
             'name' => $data['name'],
@@ -25,7 +28,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'bio' => $data['bio'] ?? null,
-            'role' => 'user',
+            'role' => $role,
         ]);
 
         if ($request->hasFile('profile_photo')) {

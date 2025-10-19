@@ -13,27 +13,15 @@ class PostRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->route('id');
+        $post = $this->route('post');
+        $postId = $post ? $post->id : null;
 
-        if ($this->isMethod('post')) {
-            return [
-                'title' => 'required|unique:posts,title',
-                'body' => 'required',
-                'categories' => 'required|array|min:1',
-                'image' => 'nullable|image|max:2048'
-            ];
-        }
-
-        if ($this->isMethod('put')) {
-            return [
-                'title' => 'required|unique:posts,title,' . $id,
-                'body' => 'required',
-                'categories' => 'required|array|min:1',
-                'image' => 'nullable|image|max:2048'
-            ];
-        }
-
-        return [];
+        return [
+            'title' => 'required|unique:posts,title,' . $postId,
+            'body' => 'required',
+            'categories' => 'required|array|min:1',
+            'image' => 'nullable|image|max:2048'
+        ];
     }
 
     public function messages(): array

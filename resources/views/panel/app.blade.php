@@ -115,7 +115,7 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
             <div class="app-brand demo">
-                <a href="index.html" class="app-brand-link">
+                <a href="{{route('panel.index')}}" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg
                     width="25"
@@ -212,7 +212,7 @@
                     <span class="menu-header-text">Ayarlar</span>
                 </li>
                 <li class="menu-item ">
-                    <a href="#" class="menu-link">
+                    <a href="{{route('panel.profile')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-user-circle"></i>
                         <div data-i18n="Analytics">Profilim</div>
                     </a>
@@ -227,10 +227,7 @@
         <div class="layout-page">
             <!-- Navbar -->
 
-            <nav
-                class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-                id="layout-navbar"
-            >
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme">
                 <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                     <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
                         <i class="bx bx-menu bx-sm"></i>
@@ -238,28 +235,12 @@
                 </div>
 
                 <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                    <!-- Search -->
-                    <div class="navbar-nav align-items-center">
-                        <div class="nav-item d-flex align-items-center">
-
-                        </div>
-                    </div>
-                    <!-- /Search -->
-
                     <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-                        <!-- User -->
+                        <!-- User Dropdown -->
                         <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle hide-arrow" href="#" data-bs-toggle="dropdown">
                                 <div class="avatar">
-                                        <img src="#"
-                                             alt="Profil Fotoğrafı"
-                                             class="w-px-40 h-auto rounded-circle" />
-
-                                        <div class="w-px-40 h-px-40 rounded-circle d-flex justify-content-center align-items-center"
-                                             style="background-color: #f0f0f0;">
-                                            <i class="bx bx-user-x" style="font-size: 22px; color: #777;"></i>
-                                        </div>
+                                    <img src="{{ Auth::user()->profile_photo_url }}" alt="Profil Fotoğrafı" class="rounded-circle">
                                 </div>
                             </a>
 
@@ -269,23 +250,17 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0 me-3">
                                                 <div class="avatar">
-                                                   )
-                                                        <img src="#"
-                                                             alt="Profil Fotoğrafı"
-                                                             class="w-px-40 h-auto rounded-circle" />
-
-                                                        <div class="w-px-40 h-px-40 rounded-circle d-flex justify-content-center align-items-center"
-                                                             style="background-color: #f0f0f0;">
-                                                            <i class="bx bx-user-x" style="font-size: 22px; color: #777;"></i>
-                                                        </div>
+                                                    <img src="{{ Auth::user()->profile_photo_url }}"
+                                                         alt="Profil Fotoğrafı"
+                                                         class="w-px-40 h-auto rounded-circle" />
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
-    <span class="fw-semibold d-block">
-        {{ Auth::user()->name ?? 'Kullanıcı Adı' }} {{ Auth::user()->surname ?? '' }}
-    </span>
+                                                <span class="fw-semibold d-block">
+                                                    {{ Auth::user()->name }} {{ Auth::user()->surname }}
+                                                </span>
                                                 <small class="text-muted">
-                                                    {{ Auth::user()->email ?? 'E-posta adresi yok' }}
+                                                    {{ Auth::user()->email }}
                                                 </small>
                                             </div>
                                         </div>
@@ -295,7 +270,7 @@
                                 <li><div class="dropdown-divider"></div></li>
 
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('panel.profile') }}">
                                         <i class="bx bx-user me-2"></i>
                                         <span class="align-middle">Profilim</span>
                                     </a>
@@ -304,7 +279,7 @@
                                 <li><div class="dropdown-divider"></div></li>
 
                                 <li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
                                         @csrf
                                     </form>
                                     <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -314,8 +289,7 @@
                                 </li>
                             </ul>
                         </li>
-
-                        <!--/ User -->
+                        <!-- /User Dropdown -->
                     </ul>
                 </div>
             </nav>
@@ -345,6 +319,11 @@
 
             <!-- Place this tag in your head or just before your close body tag. -->
             <script async defer src="https://buttons.github.io/buttons.js"></script>
+        </div>
+
+    </div>
+
 @yield('scripts')
+
 </body>
 </html>

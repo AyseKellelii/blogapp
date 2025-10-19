@@ -101,12 +101,10 @@
                     },
                     { data: 'actions', name: 'actions', orderable: false, searchable: false }
                 ],
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json'
-                }
+                language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json' }
             });
 
-            // 🔹 Kategori Ekle
+
             $('#addForm').on('submit', function(e) {
                 e.preventDefault();
                 $.post("{{ route('categories.store') }}", $(this).serialize(), function(data) {
@@ -119,22 +117,22 @@
                 });
             });
 
-            // 🔹 Düzenleme Modalı Aç
+            // düzenleme butonuna tıklama
             $(document).on('click', '.editBtn', function() {
                 let id = $(this).data('id');
-                $.get(`/panel/categories/edit/${id}`, function(data) {
+                $.get(`/panel/categories/${id}/edit`, function(data) {
                     $('#edit_id').val(data.category.id);
                     $('#edit_name').val(data.category.name);
                     $('#editModal').modal('show');
                 });
             });
 
-            // 🔹 Güncelle
+
             $('#editForm').on('submit', function(e) {
                 e.preventDefault();
                 let id = $('#edit_id').val();
                 $.ajax({
-                    url: `/panel/categories/update/${id}`,
+                    url: `/panel/categories/${id}`,
                     method: 'PUT',
                     data: $(this).serialize(),
                     success: function(data) {
@@ -148,7 +146,7 @@
                 });
             });
 
-            // 🔹 Sil
+
             $(document).on('click', '.deleteBtn', function() {
                 let id = $(this).data('id');
                 Swal.fire({
@@ -161,7 +159,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/panel/categories/delete/${id}`,
+                            url: `/panel/categories/${id}`,
                             method: 'DELETE',
                             data: { _token: '{{ csrf_token() }}' },
                             success: function(data) {
@@ -173,5 +171,6 @@
                 });
             });
         });
+
     </script>
 @endsection

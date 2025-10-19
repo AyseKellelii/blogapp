@@ -19,8 +19,8 @@ class PostController extends Controller
 
     public function fetch()
     {
-
         $user = auth()->user();
+
         $data = PostModel::with(['categories', 'media'])
             ->where('user_id', $user->id)
             ->latest();
@@ -28,16 +28,14 @@ class PostController extends Controller
         return DataTables::of($data)
             ->addColumn('categories', fn($post) => $post->categories->pluck('name')->join(', '))
             ->addColumn('image', fn($post) => $post->image_url)
-            ->addColumn('actions', function ($post) {
-                return '
+            ->addColumn('is_published', fn($post) => $post->is_published)
+            ->addColumn('actions', fn($post) => '
                 <button class="btn btn-warning btn-sm editBtn" data-id="'.$post->id.'">Düzenle</button>
                 <button class="btn btn-danger btn-sm deleteBtn" data-id="'.$post->id.'">Sil</button>
-            ';
-            })
+            ')
             ->rawColumns(['actions'])
             ->make(true);
     }
-
 
     public function store(PostRequest $request)
     {
@@ -46,7 +44,7 @@ class PostController extends Controller
             'title' => $request->title,
             'content' => $request->body,
             'slug' => Str::slug($request->title),
-            'is_published' => $request->has('is_published') ? 1 : 0,
+            'is_published' => $request->has('is_published'),
         ]);
 
         $post->categories()->attach($request->categories);
@@ -58,36 +56,32 @@ class PostController extends Controller
         return response()->json(['success' => 'Yazı başarıyla eklendi!']);
     }
 
-    public function edit($id)
+    public function edit(PostModel $post)
     {
-        $post = PostModel::with('categories')->findOrFail($id);
+        $post->load('categories');
         return response()->json(['post' => $post]);
     }
 
-    public function update(PostRequest $request, $id)
+    public function update(PostRequest $request, PostModel $post)
     {
-        $post = PostModel::findOrFail($id);
-
         $post->update([
             'title' => $request->title,
             'content' => $request->body,
             'slug' => Str::slug($request->title),
-            'is_published' => $request->has('is_published') ? 1 : 0,
+            'is_published' => $request->has('is_published'),
         ]);
 
         $post->categories()->sync($request->categories);
 
         if ($request->hasFile('image')) {
-            $post->clearMediaCollection('post_images');
             $post->addMediaFromRequest('image')->toMediaCollection('post_images');
         }
 
         return response()->json(['success' => 'Yazı başarıyla güncellendi!']);
     }
 
-    public function destroy($id)
+    public function destroy(PostModel $post)
     {
-        $post = PostModel::findOrFail($id);
         $post->clearMediaCollection('post_images');
         $post->categories()->detach();
         $post->delete();
