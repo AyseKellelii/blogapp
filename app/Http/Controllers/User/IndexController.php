@@ -16,9 +16,8 @@ class IndexController extends Controller
         $publishedPosts = PostModel::where('is_published', 1)->get();
         $randomPosts = $publishedPosts->shuffle()->take(4);
 
-        $authors = User::whereHas('posts', function($q){
-            $q->where('is_published', 1);
-        })->get();
+        $authors = User::where('role', 'admin')->get();
+
 
         $categories = CategoryModel::orderBy('name')->get();
 

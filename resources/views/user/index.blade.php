@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{asset('user/lib/animate/animate.min.css')}}"/>
     <link href="{{asset('user/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
     <link href="{{asset('user/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('user/lib/owlcarousel/assets/owl.theme.default.min.css') }}" rel="stylesheet">
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -32,7 +33,50 @@
     <!-- Template Stylesheet -->
     <link href="{{asset('user/css/style.css')}}" rel="stylesheet">
 </head>
+<style>
+    /* Owl Carousel navigasyon oklarını özelleştir */
+    .owl-carousel .owl-nav {
+        position: absolute;
+        top: 45%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
 
+    .owl-carousel .owl-nav button {
+        background: rgba(0, 0, 0, 0.6) !important;
+        color: #fff !important;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        line-height: 40px !important;
+        font-size: 22px !important;
+        transition: all 0.3s ease;
+        pointer-events: auto;
+    }
+
+    .owl-carousel .owl-nav button:hover {
+        background: #0d6efd !important; /* Bootstrap mavi tonu */
+        color: #fff !important;
+        transform: scale(1.1);
+    }
+
+    .owl-carousel .owl-nav button span {
+        font-size: 28px;
+        line-height: 1;
+    }
+
+    /* Mobilde daha küçük boyut */
+    @media (max-width: 768px) {
+        .owl-carousel .owl-nav button {
+            width: 38px;
+            height: 38px;
+            font-size: 18px !important;
+        }
+    }
+</style>
 <body>
 
 <!-- Spinner Start -->
@@ -224,11 +268,13 @@
                         </div>
 
                         <div class="rounded-bottom p-4 flex-grow-1 d-flex flex-column">
-                            <a href="{{ route('post.show', $post->slug) }}" class="h5 d-inline-block mb-2">
+                            <a href="{{ route('post.show', $post->slug) }}" class="h5 d-inline-block mb-2"
+                               style="word-wrap: break-word; overflow-wrap: break-word;">
                                 Başlık: {{ $post->title }}
                             </a>
 
-                            <p class="text-muted mb-3 flex-grow-1">
+                            <p class="text-muted mb-3 flex-grow-1"
+                               style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                                 İçerik: {{ \Illuminate\Support\Str::limit($post->content, 100) }}
                             </p>
 
@@ -245,7 +291,6 @@
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             @empty
@@ -261,6 +306,7 @@
         </div>
     </div>
 </div>
+
 <!-- Services End -->
 
 <!-- Team Start -->
@@ -270,35 +316,35 @@
             <h4 class="text-primary">Yazarlarımız</h4>
             <h1 class="display-5 mb-4">Yazarlarımızı Tanıyın</h1>
         </div>
-        <div class="row g-4">
-            @foreach($authors as $index => $author)
-                <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="{{ 0.2 + ($index * 0.2) }}s">
-                    <div class="team-item text-center shadow-sm rounded-3 overflow-hidden">
-                        <div class="team-img" style="height: 250px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ $author->profile_photo_url ?: asset('user/img/default.png') }}"
-                                 class="img-fluid rounded-circle"
-                                 alt="{{ $author->name }}"
-                                 style="width: 200px; height: 200px; object-fit: cover;">
-                        </div>
-                        <div class="team-title mt-3">
-                            <h4 class="mb-1">{{ $author->name }} {{ $author->surname }}</h4>
-                            <h5 class="mb-2">{{ $author->email }}</h5>
-                            <p class="mb-2 text-muted">Yazar</p>
-                        </div>
-                        <div class="team-icon mb-3">
-                            <a class="btn btn-primary btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-circle" href="#"><i class="fab fa-instagram"></i></a>
-                        </div>
+
+        <!-- Owl Carousel Wrapper -->
+        <div class="owl-carousel team-carousel wow fadeInUp" data-wow-delay="0.3s">
+            @foreach($authors as $author)
+                <div class="team-item text-center shadow-sm rounded-3 overflow-hidden p-3">
+                    <div class="team-img" style="height: 250px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <img src="{{ $author->profile_photo_url ?: asset('user/img/default.png') }}"
+                             class="img-fluid rounded-circle"
+                             alt="{{ $author->name }}"
+                             style="width: 200px; height: 200px; object-fit: cover;">
+                    </div>
+                    <div class="team-title mt-3">
+                        <h4 class="mb-1">{{ $author->name }} {{ $author->surname }}</h4>
+                        <h5 class="mb-2 text-muted" style="font-size: 0.9rem;">{{ $author->email }}</h5>
+                        <p class="mb-2 text-muted">Yazar</p>
+                    </div>
+                    <div class="team-icon mb-3">
+                        <a class="btn btn-primary btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-primary btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-primary btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-primary btn-sm-square rounded-circle" href="#"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             @endforeach
         </div>
-
     </div>
 </div>
 <!-- Team End -->
+
 
 <!-- FAQs Start -->
 <div class="container-fluid faq-section pb-5">
@@ -590,6 +636,31 @@
 
 <!-- Template Javascript -->
 <script src="{{ asset('user/js/main.js') }}"></script>
+<script src="{{ asset('user/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+<script>
+    $(document).ready(function(){
+        $(".team-carousel").owlCarousel({
+            loop: true,
+            margin: 20,
+            nav: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            navText: [
+                '<span class="fas fa-chevron-left"></span>',
+                '<span class="fas fa-chevron-right"></span>'
+            ],
+            responsive:{
+                0:{ items:1 },
+                576:{ items:2 },
+                992:{ items:3 },
+                1200:{ items:4 }
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
 
