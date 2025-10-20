@@ -15,7 +15,11 @@ class ProfileController extends Controller
     {
         $categories = CategoryModel::orderBy('name')->get();
         $user = Auth::user();
-        return view('user.profile', compact('categories', 'user'));
+        $posts = $user->posts()
+            ->with('categories')
+            ->latest()
+            ->get();
+        return view('user.profile', compact('categories', 'user', 'posts'));
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Panel\ProfileRequest;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -23,6 +24,11 @@ class ProfileController extends Controller
             'email' => $request->email,
             'bio' => $request->bio,
         ]);
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
 
         if ($request->hasFile('profile_photo')) {
             $user->addMediaFromRequest('profile_photo')->toMediaCollection('profile_photo');

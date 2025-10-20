@@ -83,23 +83,34 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="{{route('user.index')}}" class="nav-item nav-link active">Ana Sayfa</a>
+                <a href="{{ route('user.index') }}" class="nav-item nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
+                    Ana Sayfa
+                </a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         Bloglar
                     </a>
                     <div class="dropdown-menu m-0">
-                        <a href="{{route('user.post')}}" class="dropdown-item"> Tüm Bloglar</a>
+                        <a href="{{ route('user.post') }}" class="dropdown-item {{ request()->routeIs('user.post') ? 'active' : '' }}">
+                            Tüm Bloglar
+                        </a>
+
                         @foreach($categories as $cat)
-                            <a href="{{ route('user.category_post', $cat->slug) }}" class="dropdown-item">
+                            <a href="{{ route('user.category_post', $cat->slug) }}"
+                               class="dropdown-item {{ request()->is('category/'.$cat->slug) ? 'active' : '' }}">
                                 {{ $cat->name }}
                             </a>
                         @endforeach
+
                     </div>
                 </div>
 
-                <a href="{{route('user.about')}}" class="nav-item nav-link">Hakkımızda</a>
-                <a href="{{route('user.contact')}}" class="nav-item nav-link">İletişim</a>
+                <a href="{{ route('user.about') }}" class="nav-item nav-link {{ request()->routeIs('user.about') ? 'active' : '' }}">
+                    Hakkımızda
+                </a>
+                <a href="{{ route('user.contact') }}" class="nav-item nav-link {{ request()->routeIs('user.contact') ? 'active' : '' }}">
+                    İletişim
+                </a>
             </div>
             @auth
                 <a href="{{route('user.profile')}}" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Profilim</a>
@@ -126,7 +137,7 @@
 <div class="container-fluid contact py-5">
     <div class="container py-5">
         <div class="row g-5">
-            <div class="col-xl-6">
+            <div class="col-xl-12">
                 <div class="wow fadeInUp" data-wow-delay="0.2s">
 
                     <div class="bg-light p-5 rounded h-100 wow fadeInUp" data-wow-delay="0.2s">
@@ -212,6 +223,60 @@
     </div>
 </div>
 <!-- Contact End -->
+
+    <div class="container py-5">
+        <div class="row g-5">
+            <hr class="my-5">
+
+            <h4 class="text-primary mb-4">Yayınladığım Yazılar</h4>
+
+            @if($posts->count() > 0)
+                <div class="row g-4">
+                    @foreach($posts as $post)
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 shadow-sm">
+                                <img src="{{ $post->image_url }}"
+                                     class="card-img-top"
+                                     alt="{{ $post->title }}"
+                                     style="height:200px; object-fit:cover;">
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">Başlık: {{ $post->title }}</h5>
+                                    <p class="card-text text-muted flex-grow-1" style="font-size: 14px;">
+                                       İçerik: {{ Str::limit(strip_tags($post->content), 100, '...') }}
+                                    </p>
+
+                                    <div class="mt-2">
+                                        @foreach($post->categories as $category)
+                                            <span class="badge bg-primary"> Kategori: {{ $category->name }}</span>
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Durum Rozeti -->
+                                    <div class="mt-3">
+                                        <span class="badge {{ $post->is_published ? 'bg-success' : 'bg-secondary' }}">
+                                           Durum: {{ $post->is_published ? 'Yayında' : 'Taslak' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Sadece Yayında Olanlarda "Yazıyı Gör" -->
+                                    @if($post->is_published)
+                                        <a href="{{ route('post.show', $post->slug) }}"
+                                           class="btn btn-outline-primary btn-sm mt-3 align-self-start">
+                                            Yazıyı Gör
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="text-muted">Henüz yayınladığınız bir yazı bulunmamaktadır.</p>
+            @endif
+
+        </div>
+    </div>
 
 <!-- Footer Start -->
 <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">

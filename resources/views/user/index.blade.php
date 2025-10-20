@@ -84,15 +84,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="{{route('user.index')}}" class="nav-item nav-link active">Ana Sayfa</a>
+                <a href="{{ route('user.index') }}" class="nav-item nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
+                    Ana Sayfa
+                </a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         Bloglar
                     </a>
                     <div class="dropdown-menu m-0">
-                        <a href="{{route('user.post')}}" class="dropdown-item"> Tüm Bloglar</a>
+                        <a href="{{ route('user.post') }}" class="dropdown-item {{ request()->routeIs('user.post') ? 'active' : '' }}">
+                            Tüm Bloglar
+                        </a>
+
                         @foreach($categories as $cat)
-                            <a href="{{ route('user.category_post', $cat->slug) }}" class="dropdown-item">
+                            <a href="{{ route('user.category_post', $cat->slug) }}"
+                               class="dropdown-item {{ request()->is('category/'.$cat->slug) ? 'active' : '' }}">
                                 {{ $cat->name }}
                             </a>
                         @endforeach
@@ -100,8 +106,12 @@
                     </div>
                 </div>
 
-                <a href="{{route('user.about')}}" class="nav-item nav-link">Hakkımızda</a>
-                <a href="{{route('user.contact')}}" class="nav-item nav-link">İletişim</a>
+                <a href="{{ route('user.about') }}" class="nav-item nav-link {{ request()->routeIs('user.about') ? 'active' : '' }}">
+                    Hakkımızda
+                </a>
+                <a href="{{ route('user.contact') }}" class="nav-item nav-link {{ request()->routeIs('user.contact') ? 'active' : '' }}">
+                    İletişim
+                </a>
             </div>
             @auth
                 <a href="{{route('user.profile')}}" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0">Profilim</a>

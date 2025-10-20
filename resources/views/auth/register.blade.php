@@ -137,7 +137,7 @@
                         </a>
                     </div>
                     <!-- /Logo -->
-                    <h4 class="mb-2">Hoşgeldiniz 🚀</h4>
+                    <h4 class="mb-2">Hoşgeldiniz </h4>
                     <p class="mb-4">Kayıt Olun ve Bilgilenmeye Başlayın!</p>
                     <form id="formAuthentication" class="mb-3" action="{{ route('auth.register.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf

@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="content-wrapper">
-        <div class="container-fluid flex-grow-1 container-p-y"> {{-- container-xxl -> container-fluid --}}
+        <div class="container-fluid flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4">
                 <span class="text-muted fw-light">Profil</span> Bilgilerimi Güncelle
             </h4>
 
             <div class="row">
-                <div class="col-xl-12"> {{-- col-xl-8 -> col-xl-12 yapıldı --}}
-                    <div class="card mb-4 w-100"> {{-- kart tam genişlikte --}}
+                <div class="col-xl-12">
+                    <div class="card mb-4 w-100">
                         <div class="card-header">
                             <h5 class="mb-0">Kişisel Bilgiler</h5>
                         </div>
@@ -95,6 +95,21 @@
                                     <label class="form-label">Profil Fotoğrafı</label>
                                     <div class="input-group input-group-merge">
                                         <input type="file" name="profile_photo" class="form-control mt-2" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Yeni Şifre</label>
+                                    <div class="input-group input-group-merge">
+                                        <span class="input-group-text"><i class="bx bx-lock"></i></span>
+                                        <input type="password" name="password" class="form-control" placeholder="Yeni şifrenizi girin">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Yeni Şifre (Tekrar)</label>
+                                    <div class="input-group input-group-merge">
+                                        <span class="input-group-text"><i class="bx bx-lock-alt"></i></span>
+                                        <input type="password" name="password_confirmation" class="form-control" placeholder="Yeni şifrenizi tekrar girin">
                                     </div>
                                 </div>
 

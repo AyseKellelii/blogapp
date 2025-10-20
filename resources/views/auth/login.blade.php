@@ -137,6 +137,12 @@
                         </a>
                     </div>
                     <!-- /Logo -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }} Giriş yapabilirsiniz.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <h4 class="mb-2">Hoşgeldiniz!</h4>
                     <p class="mb-4">Giriş Yaparak Bilgilenmeye Devam Edin.</p>
 

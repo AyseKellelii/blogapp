@@ -28,6 +28,7 @@ class ProfileRequest extends FormRequest
             'surname' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $userId,
             'email' => 'required|email|unique:users,email,' . $userId,
+            'password' => 'nullable|string|min:6|confirmed',
             'bio' => 'nullable|string|max:1000',
             'profile_photo' => 'nullable|image|max:2048', // max 2 MB
         ];
@@ -43,6 +44,8 @@ class ProfileRequest extends FormRequest
             'email.required' => 'E-posta zorunludur.',
             'email.email' => 'Geçerli bir e-posta adresi giriniz.',
             'email.unique' => 'Bu e-posta zaten kayıtlı.',
+            'password.min' => 'Şifre en az 6 karakter olmalıdır.',
+            'password.confirmed' => 'Şifre tekrarı uyuşmuyor.',
             'profile_photo.image' => 'Profil fotoğrafı yalnızca resim formatında olmalıdır.',
             'profile_photo.max' => 'Profil fotoğrafı en fazla 2MB olabilir.',
         ];
