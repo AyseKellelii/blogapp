@@ -75,11 +75,8 @@
 @endsection
 
 @section('scripts')
-    {{-- DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-    {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
@@ -87,7 +84,7 @@
             let table = $('#categoryTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('categories.fetch') }}",
+                ajax: "{{ route('panel.categories.fetch') }}",
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
@@ -104,10 +101,10 @@
                 language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json' }
             });
 
-
+            // EKLE
             $('#addForm').on('submit', function(e) {
                 e.preventDefault();
-                $.post("{{ route('categories.store') }}", $(this).serialize(), function(data) {
+                $.post("{{ route('panel.categories.store') }}", $(this).serialize(), function(data) {
                     $('#addModal').modal('hide');
                     $('#addForm')[0].reset();
                     table.ajax.reload();
@@ -117,23 +114,23 @@
                 });
             });
 
-            // düzenleme butonuna tıklama
+            // DÜZENLE
             $(document).on('click', '.editBtn', function() {
                 let id = $(this).data('id');
-                $.get(`/panel/categories/${id}/edit`, function(data) {
+                $.get(`{{ url('panel/categories') }}/${id}/edit`, function(data) {
                     $('#edit_id').val(data.category.id);
                     $('#edit_name').val(data.category.name);
                     $('#editModal').modal('show');
                 });
             });
 
-
+            // GÜNCELLE
             $('#editForm').on('submit', function(e) {
                 e.preventDefault();
                 let id = $('#edit_id').val();
                 $.ajax({
-                    url: `/panel/categories/${id}`,
-                    method: 'PUT',
+                    url: `{{ url('panel/categories') }}/${id}`,
+                    method: 'POST',
                     data: $(this).serialize(),
                     success: function(data) {
                         $('#editModal').modal('hide');
@@ -146,7 +143,7 @@
                 });
             });
 
-
+            // SİL
             $(document).on('click', '.deleteBtn', function() {
                 let id = $(this).data('id');
                 Swal.fire({
@@ -159,7 +156,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/panel/categories/${id}`,
+                            url: `{{ url('panel/categories') }}/${id}`,
                             method: 'DELETE',
                             data: { _token: '{{ csrf_token() }}' },
                             success: function(data) {
@@ -171,6 +168,5 @@
                 });
             });
         });
-
     </script>
 @endsection

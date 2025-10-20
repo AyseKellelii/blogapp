@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <!-- GÜNCELLE MODAL -->
+    <!--  GÜNCELLE MODAL -->
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -127,7 +127,7 @@
     <script>
         $(function() {
             const table = $('#postTable').DataTable({
-                ajax: '{{ route("panel.post.fetch") }}',
+                ajax: '{{ route("panel.posts.fetch") }}',
                 columns: [
                     {data: 'id'},
                     {
@@ -151,7 +151,7 @@
             $('#addForm').submit(function(e){
                 e.preventDefault();
                 $.ajax({
-                    url: '{{ route("panel.post.store") }}',
+                    url: '{{ route("panel.posts.store") }}',
                     method: 'POST',
                     data: new FormData(this),
                     processData: false,

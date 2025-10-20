@@ -196,13 +196,13 @@
                 </li>
 
                 <li class="menu-item ">
-                    <a href="{{route('categories.index')}}" class="menu-link">
+                    <a href="{{route('panel.categories.index')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-category"></i>
                         <div data-i18n="Analytics">Kategori Ekle</div>
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a href="{{route('panel.post.index')}}" class="menu-link">
+                    <a href="{{route('panel.posts.index')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-pencil"></i>
                         <div data-i18n="Analytics">Yazı Oluştur</div>
                     </a>

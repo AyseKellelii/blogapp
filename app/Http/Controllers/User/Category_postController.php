@@ -8,9 +8,6 @@ use App\Models\PostModel;
 
 class Category_postController extends Controller
 {
-    /**
-     * Tüm kategorileri listele.
-     */
     public function index()
     {
 
@@ -24,7 +21,6 @@ class Category_postController extends Controller
 
         $category = CategoryModel::where('slug', $slug)->firstOrFail();
         $posts = $category->posts()->with('user')->latest()->get();
-
         $categories = CategoryModel::orderBy('name')->get();
 
         return view('user.category_post', compact('category', 'posts', 'categories'));

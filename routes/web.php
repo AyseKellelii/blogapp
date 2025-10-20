@@ -37,27 +37,19 @@ Route::get('/categories', [Category_postController::class, 'index'])->name('user
 Route::get('/category/{slug}', [Category_postController::class, 'show'])->name('user.category_post');
 
 
-// ADMIN PANELİ-sadece admin erişebilir
+// ADMIN PANELİ
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panel/index', [\App\Http\Controllers\Panel\IndexController::class, 'index'])->name('panel.index');
 });
 
-Route::prefix('panel/categories')->group(function () {
-    Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('/fetch', [CategoryController::class, 'fetch'])->name('categories.fetch');
-    Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-    Route::put('/{category}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+Route::prefix('panel')->name('panel.')->group(function () {
+    Route::resource('categories', CategoryController::class);
+    Route::get('categories-fetch', [CategoryController::class, 'fetch'])->name('categories.fetch');
 });
 
-Route::prefix('panel')->group(function () {
-    Route::get('/posts', [PostController::class, 'index'])->name('panel.post.index');
-    Route::get('/posts/fetch', [PostController::class, 'fetch'])->name('panel.post.fetch');
-    Route::post('/posts', [PostController::class, 'store'])->name('panel.post.store');
-    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('panel.post.edit');
-    Route::put('/posts/{post}', [PostController::class, 'update'])->name('panel.post.update');
-    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('panel.post.destroy');
+Route::prefix('panel')->name('panel.')->group(function () {
+    Route::resource('posts', PostController::class);
+    Route::get('posts-fetch', [PostController::class, 'fetch'])->name('posts.fetch');
 });
 
 Route::get('/panel/profile', [\App\Http\Controllers\Panel\ProfileController::class, 'index'])->name('panel.profile');

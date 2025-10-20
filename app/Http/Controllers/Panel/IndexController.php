@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\CategoryModel;
-use App\Models\Post;
-use App\Models\Category;
 use App\Models\PostModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
