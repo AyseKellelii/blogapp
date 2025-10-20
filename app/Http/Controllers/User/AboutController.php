@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AboutController extends Controller
 {
-    public function index()
+    public function __invoke()
     {
         $categories = CategoryModel::orderBy('name')->get();
         return view('user.about', compact('categories'));

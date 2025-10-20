@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function __invoke()
     {
         $categories = CategoryModel::orderBy('name')->get();
         return view('user.contact',compact('categories'));

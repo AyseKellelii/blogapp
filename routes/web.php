@@ -26,8 +26,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/', [IndexController::class, 'index'])->name('user.index');
 Route::get('/post/{slug}', [App\Http\Controllers\User\PostController::class, 'show'])->name('post.show');
 Route::get('/posts', [App\Http\Controllers\User\PostController::class, 'index'])->name('user.post');
-Route::get('/about', [AboutController::class, 'index'])->name('user.about');
-Route::get('/contact', [ContactController::class, 'index'])->name('user.contact');
+Route::get('/about', AboutController::class)->name('user.about');
+Route::get('/contact', ContactController::class)->name('user.contact');
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('user.profile.update');
