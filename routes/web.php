@@ -15,26 +15,40 @@ Route::get('/', function () {
     return view('welcome');
 });
 // AUTH
-Route::get('/register', [RegisterController::class, 'index'])->name('auth.register');
-Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/register', 'index')->name('auth.register');
+    Route::post('/register', 'store')->name('auth.register.store');
+});
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('auth.login.store');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'index')->name('login');
+    Route::post('/login', 'login')->name('auth.login.store');
+    Route::post('/logout', 'logout')->name('logout');
+});
 
 // USER
-Route::get('/', [IndexController::class, 'index'])->name('user.index');
-Route::get('/post/{slug}', [App\Http\Controllers\User\PostController::class, 'show'])->name('post.show');
-Route::get('/posts', [App\Http\Controllers\User\PostController::class, 'index'])->name('user.post');
+Route::controller(IndexController::class)->group(function () {
+    Route::get('/', 'index')->name('user.index');
+});
+
+Route::controller(App\Http\Controllers\User\PostController::class)->group(function () {
+    Route::get('/posts', 'index')->name('user.post');
+    Route::get('/post/{slug}', 'show')->name('post.show');
+});
+
 Route::get('/about', AboutController::class)->name('user.about');
 Route::get('/contact', ContactController::class)->name('user.contact');
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('user.profile.update');
-    Route::delete('profile/remove-photo', [ProfileController::class, 'removePhoto'])->name('user.profile.removePhoto');
+
+Route::controller(Category_postController::class)->group(function () {
+    Route::get('/categories', 'index')->name('user.categories.index');
+    Route::get('/category/{slug}', 'show')->name('user.category_post');
 });
-Route::get('/categories', [Category_postController::class, 'index'])->name('user.categories.index');
-Route::get('/category/{slug}', [Category_postController::class, 'show'])->name('user.category_post');
+
+Route::middleware(['auth'])->controller(App\Http\Controllers\User\ProfileController::class)->group(function () {
+    Route::get('/profile', 'index')->name('user.profile');
+    Route::put('/profile/update', 'update')->name('user.profile.update');
+    Route::delete('/profile/remove-photo', 'removePhoto')->name('user.profile.removePhoto');
+});
 
 
 // ADMIN PANELİ
@@ -52,9 +66,12 @@ Route::prefix('panel')->name('panel.')->group(function () {
     Route::get('posts-fetch', [PostController::class, 'fetch'])->name('posts.fetch');
 });
 
-Route::get('/panel/profile', [\App\Http\Controllers\Panel\ProfileController::class, 'index'])->name('panel.profile');
-Route::put('/panel/profile/update', [\App\Http\Controllers\Panel\ProfileController::class, 'update'])->name('panel.profile.update');
-Route::delete('/panel/profile/photo', [\App\Http\Controllers\Panel\ProfileController::class, 'deletePhoto'])
-    ->name('panel.profile.photo.delete');
+Route::prefix('panel')->name('panel.')->group(function () {
+    Route::controller(App\Http\Controllers\Panel\ProfileController::class)->group(function () {
+        Route::get('/profile', 'index')->name('profile');
+        Route::put('/profile/update', 'update')->name('profile.update');
+        Route::delete('/profile/photo', 'deletePhoto')->name('profile.photo.delete');
+    });
+});
 
 

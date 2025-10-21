@@ -19,7 +19,7 @@ class IndexController extends Controller
         // yayılanmış, taslak sayıları
         $totalPosts = $userPosts->count();
         $publishedPosts = $userPosts->where('is_published', true)->count();
-        $unpublishedPosts = $userPosts->where('is_published', false)->count();
+        $unpublishedPosts = $totalPosts - $publishedPosts;
         $totalCategories = CategoryModel::count();
 
         // Aylara göre adminin yayınladığı post sayısı
