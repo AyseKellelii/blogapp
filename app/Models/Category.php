@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
-class CategoryModel extends Model
+class Category extends Model
 {
     use HasFactory;
 
@@ -14,7 +15,9 @@ class CategoryModel extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(PostModel::class, 'category_post', 'category_id', 'post_id');
+        return $this->belongsToMany(Post::class, 'category_post',
+            'category_id',
+            'post_id');
     }
 
 }

@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\CategoryModel;
-use App\Models\PostModel;
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $categories = CategoryModel::orderBy('name')->get();
-        $posts = PostModel::with('user')
+
+        $posts = Post::with('user')
             ->where('is_published', 1)
             ->whereHas('user', function ($query) {
                 $query->where('role', 'admin');
@@ -20,15 +20,14 @@ class PostController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user.post', compact('categories','posts'));
+        return view('user.post', compact('posts'));
     }
 
     public function show($slug)
     {
-        $post = PostModel::with('user', 'categories')->where('slug', $slug)->firstOrFail();
-        $categories = CategoryModel::orderBy('name')->get();
+        $post = Post::with('user', 'categories')->where('slug', $slug)->firstOrFail();
 
-        return view('user.post_show', compact('post', 'categories'));
+        return view('user.post_show', compact('post'));
     }
 
 }

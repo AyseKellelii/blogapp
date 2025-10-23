@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ProfileRequest;
-use App\Models\CategoryModel;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,19 +13,15 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $categories = CategoryModel::orderBy('name')->get();
         $user = Auth::user();
-        $posts = $user->posts()
-            ->with('categories')
-            ->latest()
-            ->get();
-        return view('user.profile', compact('categories', 'user', 'posts'));
+        $posts = $user->posts()->with('categories')->latest()->get();
+        return view('user.profile', compact( 'user', 'posts'));
     }
-
 
     public function update(ProfileRequest $request)
     {
         $user = Auth::user();
+
 
         // Temel bilgileri güncelle
         $user->name = $request->name;

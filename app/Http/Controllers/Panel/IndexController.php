@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
-use App\Models\CategoryModel;
-use App\Models\PostModel;
+use App\Models\Category;
+use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,16 +14,16 @@ class IndexController extends Controller
     {
         $user = Auth::user();
          //sadece giriş yapanın yaılarını getiriyor
-        $userPosts = PostModel::where('user_id', $user->id)->get();
+        $userPosts = Post::where('user_id', $user->id)->get();
 
         // yayılanmış, taslak sayıları
         $totalPosts = $userPosts->count();
         $publishedPosts = $userPosts->where('is_published', true)->count();
         $unpublishedPosts = $totalPosts - $publishedPosts;
-        $totalCategories = CategoryModel::count();
+        $totalCategories = Category::count();
 
         // Aylara göre adminin yayınladığı post sayısı
-        $monthlyPosts = PostModel::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+        $monthlyPosts = Post::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->where('user_id', $user->id)
             ->where('is_published', true)
             ->groupBy('month')

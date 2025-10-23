@@ -1,14 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\PostController;
 use App\Http\Controllers\User\AboutController;
-use App\Http\Controllers\User\Category_postController;
 use App\Http\Controllers\User\ContactController;
-use App\Http\Controllers\User\IndexController;
-use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,13 +21,12 @@ Route::controller(RegisterController::class)->group(function () {
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'index')->name('login');
     Route::post('/login', 'login')->name('auth.login.store');
-    Route::post('/logout', 'logout')->name('logout');
 });
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 // USER
-Route::controller(IndexController::class)->group(function () {
-    Route::get('/', 'index')->name('user.index');
-});
+Route::get('/', [App\Http\Controllers\User\IndexController::class, 'index'])->name('user.index');
+
 
 Route::controller(App\Http\Controllers\User\PostController::class)->group(function () {
     Route::get('/posts', 'index')->name('user.post');
@@ -39,10 +36,7 @@ Route::controller(App\Http\Controllers\User\PostController::class)->group(functi
 Route::get('/about', AboutController::class)->name('user.about');
 Route::get('/contact', ContactController::class)->name('user.contact');
 
-Route::controller(Category_postController::class)->group(function () {
-    Route::get('/categories', 'index')->name('user.categories.index');
-    Route::get('/category/{slug}', 'show')->name('user.category_post');
-});
+Route::get('/categories/{slug}', [App\Http\Controllers\User\CategoryController::class, 'index'])->name('user.category_post');
 
 Route::middleware(['auth'])->controller(App\Http\Controllers\User\ProfileController::class)->group(function () {
     Route::get('/profile', 'index')->name('user.profile');

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class PostModel extends Model implements HasMedia
+class Post extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
@@ -28,7 +28,9 @@ class PostModel extends Model implements HasMedia
 
     public function categories()
     {
-        return $this->belongsToMany(CategoryModel::class, 'category_post', 'post_id', 'category_id');
+        return $this->belongsToMany(Category::class, 'category_post',
+            'post_id',
+            'category_id');
     }
 
 

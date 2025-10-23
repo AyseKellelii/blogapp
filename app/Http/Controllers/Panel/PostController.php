@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Panel\PostRequest;
-use App\Models\CategoryModel;
-use App\Models\PostModel;
+use App\Models\Category;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -13,7 +14,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $categories = CategoryModel::all();
+        $categories = Category::all();
         return view('panel.post', compact('categories'));
     }
 
@@ -21,7 +22,7 @@ class PostController extends Controller
     {
         $user = auth()->user();
 
-        $data = PostModel::with(['categories', 'media'])
+        $data = Post::with(['categories', 'media'])
             ->where('user_id', $user->id)
             ->latest();
 
@@ -39,48 +40,45 @@ class PostController extends Controller
 
     public function store(PostRequest $request)
     {
-        $post = PostModel::create([
-            'user_id' => auth()->id(),
-            'title' => $request->title,
-            'content' => $request->body,
-            'slug' => Str::slug($request->title),
-            'is_published' => $request->has('is_published'),
-        ]);
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+        $data['slug'] = Str::slug($data['title']);
 
+        $post = Post::create($data);
         $post->categories()->attach($request->categories);
 
         if ($request->hasFile('image')) {
+            $post->clearMediaCollection('post_images');
             $post->addMediaFromRequest('image')->toMediaCollection('post_images');
         }
 
         return response()->json(['success' => 'Yazı başarıyla eklendi!']);
     }
 
-    public function edit(PostModel $post)
+    public function edit(Post $post)
     {
         $post->load('categories');
         return response()->json(['post' => $post]);
     }
 
-    public function update(PostRequest $request, PostModel $post)
+
+    public function update(PostRequest $request, Post $post)
     {
-        $post->update([
-            'title' => $request->title,
-            'content' => $request->body,
-            'slug' => Str::slug($request->title),
-            'is_published' => $request->has('is_published'),
-        ]);
+    \Log::debug($request->validated());
+        $post->update($request->validated());
 
         $post->categories()->sync($request->categories);
 
         if ($request->hasFile('image')) {
+            $post->clearMediaCollection('post_images');
             $post->addMediaFromRequest('image')->toMediaCollection('post_images');
         }
 
         return response()->json(['success' => 'Yazı başarıyla güncellendi!']);
     }
 
-    public function destroy(PostModel $post)
+
+    public function destroy(Post $post)
     {
         $post->clearMediaCollection('post_images');
         $post->categories()->detach();

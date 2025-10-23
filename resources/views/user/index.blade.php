@@ -142,7 +142,7 @@
 
                         @foreach($categories as $cat)
                             <a href="{{ route('user.category_post', $cat->slug) }}"
-                               class="dropdown-item {{ request()->is('category/'.$cat->slug) ? 'active' : '' }}">
+                               class="dropdown-item {{ request()->is($cat->slug) ? 'active' : '' }}">
                                 {{ $cat->name }}
                             </a>
                         @endforeach

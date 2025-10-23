@@ -16,21 +16,18 @@ class ProfileController extends Controller
     public function update(ProfileRequest $request)
     {
         $user = auth()->user();
+        $data = $request->validated();
 
-        $user->update([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'username' => $request->username,
-            'email' => $request->email,
-            'bio' => $request->bio,
-        ]);
-
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-            $user->save();
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
         }
 
+        $user->update($data);
+
         if ($request->hasFile('profile_photo')) {
+            $user->clearMediaCollection('profile_photo');
             $user->addMediaFromRequest('profile_photo')->toMediaCollection('profile_photo');
         }
 
